@@ -4,32 +4,27 @@ namespace MaximumMatching
 {
     class Graph
     {
+        //private int[] marks1;
+        //private int[] marks2;
+        //private int[] pairs; 
+        //List<int>[] half1;
+        //List<int>[] half2;
         private int[] marks1;
         private int[] marks2;
-        private int[] pairs; 
-        List<int>[] half1;
-        List<int>[] half2;
+        private int[] pairs;
+        private Dictionary<int, List<int>> half1;
+        private Dictionary<int, List<int>> half2;
         int size;
 
-        /// <summary>
-        /// Конструктор графа
-        /// </summary>
-        /// <param name="size"> количество вершин в одной доли </param>
-        public Graph(int size)
+
+         /// <summary>
+         /// конструктор графа
+         /// </summary>
+        public Graph()
         {
-            this.size = size;
-            marks1 = new int[size];
-            marks2 = new int[size];
-            pairs = new int[size];
-            
-            half1 = new List<int>[size];
-            half2 = new List<int>[size];
-            for (int i = 0; i < size; i++)
-            {
-                marks1[i] = -1;
-                marks2[i] = -1;
-                pairs[i] = -1;
-            }
+            size = 0;
+            half1 = new Dictionary<int, List<int>>();
+            half2 = new Dictionary<int, List<int>>();
         }
 
         /// <summary>
@@ -39,11 +34,14 @@ namespace MaximumMatching
         /// <param name="connections"> Номера вершин второй доли, с которой соединена эта вершина</param>
         public void AddConnection(int num, IEnumerable<int> connections)
         {
+            size++;
             half1[num] = new List<int>(connections);
             foreach (int con in connections)
             {
-                if (half2[con] == null)
+                if (!half2.ContainsKey(con))
+                {
                     half2[con] = new List<int>();
+                }
                 half2[con].Add(num);
             }
         }
@@ -57,6 +55,13 @@ namespace MaximumMatching
         /// </returns>
         public int [] FindPairs()
         {
+            marks1 = new int[size];
+            marks2 = new int[size];
+            pairs = new int[size];
+
+            for (int i = 0; i < size; i++)
+                pairs[i] = -1;
+
             bool foundMatching;
             
             while (true)
@@ -80,7 +85,6 @@ namespace MaximumMatching
 
                 do
                 {
-
                     foundMatching = false;
 
                     FirstHalfWork(ref curNodes1, ref curNodes2, out foundMatching);
