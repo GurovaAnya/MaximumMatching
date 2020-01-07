@@ -82,7 +82,7 @@ namespace MaximumMatching
                 {
 
                     foundMatching = false;
-\
+
                     FirstHalfWork(ref curNodes1, ref curNodes2, out foundMatching);
                     curNodes1.Clear();
                     if (foundMatching)
