@@ -34,7 +34,8 @@ namespace MaximumMatching
         /// <param name="connections"> Номера вершин второй доли, с которой соединена эта вершина</param>
         public void AddConnection(int num, IEnumerable<int> connections)
         {
-            size++;
+            if (!half1.ContainsKey(num))
+                size++;
             half1[num] = new List<int>(connections);
             foreach (int con in connections)
             {
